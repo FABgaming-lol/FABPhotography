@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAB Photography | Monochrome Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #1a1a1a;
+            --accent-color: #ffffff;
+            --metallic-light: #e8e8e8;
+            --metallic-dark: #2a2a2a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--metallic-light), var(--metallic-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary-bg);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .logo-text span {
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 300;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 5px 0;
+            transition: var(--transition);
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-icons i {
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-icons i:hover {
+            color: var(--metallic-light);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9)), 
+                        url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .hero h1 span {
+            font-weight: 700;
+            background: linear-gradient(to right, var(--metallic-light), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            text-decoration: none;
+            font-weight: 300;
+            letter-spacing: 2px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            color: var(--primary-bg);
+        }
+
+        .cta-button:hover:before {
+            left: 0;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 5%;
+            background: var(--secondary-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--metallic-dark);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--metallic-dark);
+            color: var(--accent-color);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img, .gallery-item:hover video {
+            transform: scale(1.05);
+        }
+
+        .item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-category {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 5%;
+            display: flex;
+            align-items: center;
+            gap: 5rem;
+        }
+
+        .about-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .about-image:before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--metallic-light);
+            z-index: -1;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .about-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--metallic-light), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 5%;
+            background: var(--secondary-bg);
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .contact p {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-bg);
+            border: 1px solid var(--metallic-dark);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid var(--metallic-dark);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-icons i {
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .social-icons i:hover {
+            color: var(--metallic-light);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Modal for full-size view */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-content img, .modal-content video {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--metallic-light);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 5%;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about {
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">FAB</div>
+            <div class="logo-text">FAB <span>PHOTOGRAPHY</span></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-icons">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-shopping-bag"></i>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>CAPTURING <span>MOMENTS</span> IN MONOCHROME</h1>
+            <p>Discover the art of black and white photography through the lens of FAB Photography. Each image tells a story, each frame captures emotion.</p>
+            <a href="#gallery" class="cta-button">VIEW GALLERY</a>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="section-title">
+            <h2>PORTFOLIO</h2>
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Portraits</button>
+            <button class="filter-btn">Landscapes</button>
+            <button class="filter-btn">Urban</button>
+            <button class="filter-btn">Videos</button>
+        </div>
+        <div class="gallery-grid">
+            <!-- Gallery items will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Photographer">
+        </div>
+        <div class="about-content">
+            <h2>ABOUT FAB PHOTOGRAPHY</h2>
+            <p>With over a decade of experience in monochrome photography, FAB Photography specializes in capturing the essence of moments through the timeless beauty of black and white imagery.</p>
+            <p>Our work has been featured in international exhibitions and publications, celebrating the subtle interplay of light, shadow, and texture that defines our unique visual language.</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Exhibitions</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>GET IN TOUCH</h2>
+        <p>Interested in working together or purchasing prints? Reach out to discuss your project or inquire about available works.</p>
+        <form class="contact-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="cta-button">SEND MESSAGE</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <div class="logo-icon">FAB</div>
+                <div class="logo-text">FAB <span>PHOTOGRAPHY</span></div>
+            </div>
+            <div class="social-icons">
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-pinterest"></i>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2023 FAB Photography. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- Modal for full-size view -->
+    <div class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Gallery data
+        const galleryItems = [
+            {
+                type: 'image',
+                src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                title: 'Urban Geometry',
+                category: 'urban'
+            },
+            {
+                type: 'image',
+                src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                title: 'Portrait of Silence',
+                category: 'portraits'
+            },
+            {
+                type: 'image',
+                src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                title: 'Misty Forest',
+                category: 'landscapes'
+            },
+            {
+                type: 'video',
+                src: 'https://player.vimeo.com/video/824804225?h=5c26b224a3&title=0&byline=0&portrait=0',
+                title: 'City Rhythms',
+                category: 'urban'
+            },
+            {
+                type: 'image',
+                src: 'https://images.unsplash.com/photo-1519457431-44ccd64a579b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                title: 'Architectural Lines',
+                category: 'urban'
+            },
+            {
+                type: 'image',
+                src: 'https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                title: 'Contemplation',
+                category: 'portraits'
+            },
+            {
+                type: 'image',
+                src: 'https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                title: 'Mountain Majesty',
+                category: 'landscapes'
+            },
+            {
+                type: 'video',
+                src: 'https://player.vimeo.com/video/824804225?h=5c26b224a3&title=0&byline=0&portrait=0',
+                title: 'Coastal Serenity',
+                category: 'landscapes'
+            }
+        ];
+
+        // Populate gallery
+        const galleryGrid = document.querySelector('.gallery-grid');
+        
+        galleryItems.forEach(item => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = `gallery-item ${item.category}`;
+            
+            if (item.type === 'image') {
+                galleryItem.innerHTML = `
+                    <img src="${item.src}" alt="${item.title}">
+                    <div class="item-overlay">
+                        <h3 class="item-title">${item.title}</h3>
+                        <div class="item-category">${item.category.toUpperCase()}</div>
+                    </div>
+                `;
+            } else {
+                galleryItem.innerHTML = `
+                    <video muted>
+                        <source src="${item.src}" type="video/mp4">
+                    </video>
+                    <div class="item-overlay">
+                        <h3 class="item-title">${item.title}</h3>
+                        <div class="item-category">${item.category.toUpperCase()} | VIDEO</div>
+                    </div>
+                `;
+            }
+            
+            galleryGrid.appendChild(galleryItem);
+            
+            // Add click event to open modal
+            galleryItem.addEventListener('click', () => {
+                const modal = document.querySelector('.modal');
+                const modalContent = document.querySelector('.modal-content');
+                
+                if (item.type === 'image') {
+                    modalContent.innerHTML = `<img src="${item.src}" alt="${item.title}">`;
+                } else {
+                    modalContent.innerHTML = `
+                        <video controls autoplay>
+                            <source src="${item.src}" type="video/mp4">
+                        </video>
+                    `;
+                }
+                
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Modal functionality
+        const modal = document.querySelector('.modal');
+        const closeModal = document.querySelector('.close-modal');
+        
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            // Pause any playing videos
+            const videos = modalContent.querySelectorAll('video');
+            videos.forEach(video => {
+                video.pause();
+            });
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                // Pause any playing videos
+                const videos = modalContent.querySelectorAll('video');
+                videos.forEach(video => {
+                    video.pause();
+                });
+            }
+        });
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.textContent.toLowerCase();
+                const galleryItems = document.querySelectorAll('.gallery-item');
+                
+                galleryItems.forEach(item => {
+                    if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Form submission
+        const contactForm = document.querySelector('.contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            contactForm.reset();
+        });
+    </script>
+</body>
+</html>
